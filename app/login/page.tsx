@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -27,7 +26,6 @@ import {
   Utensils,
   Eye,
   EyeOff,
-  ShoppingBag,
   ChefHat,
   Truck,
   Star,
@@ -37,6 +35,21 @@ interface LoginResponse {
   accessToken: string;
   refreshToken?: string;
 }
+
+/* Shared manga-panel look: thick ink outline + hard offset shadow */
+const PANEL =
+  "border-[3px] border-[#14102B] shadow-[6px_6px_0_#14102B] rounded-xl";
+
+const INPUT =
+  "h-12 rounded-lg border-[3px] border-[#14102B] bg-white font-medium " +
+  "placeholder:text-[#14102B]/40 " +
+  "focus-visible:ring-2 focus-visible:ring-[#FF8FB1] focus-visible:ring-offset-0";
+
+const FEATURES = [
+  { icon: ChefHat, text: "Cooked fresh after you order", tile: "bg-[#FFD23F]" },
+  { icon: Truck, text: "Delivered straight to your door", tile: "bg-[#FF8FB1]" },
+  { icon: Star, text: "Same great taste every time", tile: "bg-[#5EEAD4]" },
+];
 
 export default function LoginPage() {
   const router = useRouter();
@@ -50,9 +63,7 @@ export default function LoginPage() {
 
   if (isChecking) return null;
 
-  const handleLogin = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
     setLoading(true);
@@ -67,9 +78,7 @@ export default function LoginPage() {
       router.push(CONFIG.ROUTES.DASHBOARD);
     } catch (err: unknown) {
       setError(
-        err instanceof Error
-          ? err.message
-          : "Invalid username or password."
+        err instanceof Error ? err.message : "Invalid username or password."
       );
     } finally {
       setLoading(false);
@@ -77,145 +86,116 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen grid lg:grid-cols-2 bg-[#FFFDF5]">
+    <main className="grid min-h-screen font-body text-[#14102B] lg:grid-cols-2">
 
       {/* LEFT SIDE - BRANDING */}
-      <section className="hidden lg:flex flex-col justify-between bg-[#171717] p-12 text-white relative overflow-hidden">
+      <section className="speed-lines relative hidden flex-col justify-between overflow-hidden bg-[#14102B] p-12 text-white lg:flex">
 
         {/* LOGO */}
-        <div className="flex items-center gap-3 relative z-10">
-          <div className="bg-[#FACC15] p-3 rounded-xl">
-            <Utensils className="h-8 w-8 text-[#171717]" />
+        <div className="relative z-10 flex items-center gap-3">
+          <div className="-rotate-6 rounded-xl border-[3px] border-white bg-[#FFD23F] p-3">
+            <Utensils className="h-8 w-8 text-[#14102B]" />
           </div>
 
           <div>
-            <h1 className="text-2xl font-black tracking-wide">
+            <h1 className="font-display text-2xl leading-none tracking-wide">
               MAYONGBITAW HUB
             </h1>
-
-            <p className="text-xs tracking-[4px] text-[#FACC15]">
-              FRESH • TASTY • DELICIOUS
+            <p className="mt-1 text-xs text-[#FFD23F]">
+              Fresh, tasty, delicious
             </p>
           </div>
         </div>
 
         {/* MAIN BRANDING */}
-        <div className="max-w-lg space-y-7 relative z-10">
+        <div className="relative z-10 max-w-lg space-y-7">
 
-          {/* BURGER PICTURE */}
-          <div className="rounded-3xl overflow-hidden border-4 border-[#FACC15]/30 shadow-2xl">
-            <img
-              src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1000&q=85"
-              alt="Freshly prepared delicious burger"
-              className="w-full h-64 object-cover"
-            />
+          {/* BURGER PICTURE IN A MANGA PANEL */}
+          <div className="relative">
+            <div className="overflow-hidden rounded-xl border-[3px] border-white shadow-[8px_8px_0_#FF8FB1]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1000&q=85"
+                alt="Freshly prepared delicious burger"
+                className="h-64 w-full object-cover"
+              />
+            </div>
+
+            <span className="absolute -right-3 -top-4 rotate-6 rounded-md border-[3px] border-[#14102B] bg-[#FFD23F] px-3 py-1 font-display text-sm text-[#14102B]">
+              Juicy!
+            </span>
           </div>
 
           <div className="space-y-4">
-            <p className="text-[#FACC15] tracking-[4px] text-sm font-bold">
-              THE ULTIMATE BURGER EXPERIENCE
-            </p>
-
-            <h2 className="text-5xl font-black leading-tight">
+            <h2 className="font-display text-5xl leading-tight">
               Hungry?
-              <span className="block text-[#FACC15]">
-                Grab a Burger!
-              </span>
+              <span className="block text-[#FFD23F]">Grab a burger!</span>
             </h2>
 
-            <p className="text-gray-300 text-lg leading-relaxed">
-              Enjoy freshly prepared burgers, crispy fries,
-              and refreshing drinks. Delicious food made
-              with quality ingredients and delivered
-              straight to your door.
+            <p className="text-lg leading-relaxed text-white/80">
+              Fresh burgers, crispy fries, and cold drinks, made with good
+              ingredients and brought to your door.
             </p>
           </div>
 
           {/* FEATURES */}
-          <div className="space-y-4 text-sm">
-
-            <div className="flex items-center gap-3">
-              <ChefHat className="h-5 w-5 text-[#FACC15]" />
-              Freshly Prepared Meals
-            </div>
-
-            <div className="flex items-center gap-3">
-              <Truck className="h-5 w-5 text-[#FACC15]" />
-              Fast and Easy Delivery
-            </div>
-
-            <div className="flex items-center gap-3">
-              <Star className="h-5 w-5 text-[#FACC15]" />
-              Delicious Food Every Time
-            </div>
-
-          </div>
+          <ul className="space-y-3 text-sm font-medium">
+            {FEATURES.map(({ icon: Icon, text, tile }) => (
+              <li key={text} className="flex items-center gap-3">
+                <span
+                  className={`${tile} flex h-9 w-9 -rotate-3 items-center justify-center rounded-lg border-[3px] border-[#14102B]`}
+                >
+                  <Icon className="h-4 w-4 text-[#14102B]" />
+                </span>
+                {text}
+              </li>
+            ))}
+          </ul>
         </div>
 
-        <p className="text-sm text-gray-400 relative z-10">
+        <p className="relative z-10 text-sm text-white/60">
           © 2026 MAYONGBITAW HUB. All rights reserved.
         </p>
-
-        {/* BACKGROUND DECORATION */}
-        <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-[#FACC15]/10 rounded-full blur-3xl" />
-
-        <div className="absolute top-1/3 -right-20 w-64 h-64 bg-[#FACC15]/5 rounded-full blur-3xl" />
-
       </section>
 
       {/* RIGHT SIDE - LOGIN FORM */}
-      <section className="flex items-center justify-center p-6 sm:p-10">
+      <section className="halftone flex items-center justify-center p-6 sm:p-10">
 
         <div className="w-full max-w-md space-y-7">
 
           {/* MOBILE LOGO */}
-          <div className="lg:hidden text-center space-y-3">
-
-            <div className="inline-flex bg-[#171717] p-4 rounded-2xl">
-              <Utensils className="h-9 w-9 text-[#FACC15]" />
+          <div className="space-y-3 text-center lg:hidden">
+            <div className="inline-flex -rotate-6 rounded-xl border-[3px] border-[#14102B] bg-[#FFD23F] p-4 shadow-[4px_4px_0_#14102B]">
+              <Utensils className="h-9 w-9 text-[#14102B]" />
             </div>
 
-            <h1 className="text-2xl font-black tracking-wide text-[#171717]">
+            <h1 className="font-display text-2xl tracking-wide">
               MAYONGBITAW HUB
             </h1>
-
-            <p className="text-xs tracking-[4px] text-[#A16207]">
-              FRESH • TASTY • DELICIOUS
+            <p className="text-xs font-medium text-[#14102B]/60">
+              Fresh, tasty, delicious
             </p>
-
           </div>
 
           {/* HEADING */}
-          <div className="text-center space-y-3">
-
-            <div className="inline-flex items-center gap-2 text-[#A16207] text-sm font-bold">
-              <ShoppingBag className="h-4 w-4" />
-              ONLINE FOOD ORDERING
-            </div>
-
-            <h2 className="text-4xl font-black text-[#171717]">
-              Welcome Back!
-            </h2>
-
-            <p className="text-gray-500">
+          <div className="space-y-2 text-center">
+            <h2 className="font-display text-4xl">Welcome back!</h2>
+            <p className="text-[#14102B]/70">
               Sign in to order your favorite burgers.
             </p>
-
           </div>
 
           {/* LOGIN CARD */}
-          <Card className="border-[#FACC15]/50 shadow-xl bg-white rounded-2xl">
+          <Card className={`${PANEL} bg-white`}>
 
             <CardHeader className="space-y-2">
-
-              <CardTitle className="text-2xl font-bold text-[#171717]">
-                Login to your account
+              <CardTitle className="font-display text-2xl">
+                Sign in to your account
               </CardTitle>
 
-              <CardDescription>
+              <CardDescription className="text-[#14102B]/60">
                 Enter your username and password to continue.
               </CardDescription>
-
             </CardHeader>
 
             <form onSubmit={handleLogin}>
@@ -226,7 +206,7 @@ export default function LoginPage() {
                 {error && (
                   <div
                     role="alert"
-                    className="p-3 text-sm text-red-600 bg-red-50 rounded-lg border border-red-200"
+                    className="rounded-lg border-[3px] border-[#14102B] bg-[#FFE4EC] p-3 text-sm font-bold text-[#B4163A]"
                   >
                     {error}
                   </div>
@@ -234,11 +214,7 @@ export default function LoginPage() {
 
                 {/* USERNAME */}
                 <div className="space-y-2">
-
-                  <Label
-                    htmlFor="username"
-                    className="text-[#171717] font-semibold"
-                  >
+                  <Label htmlFor="username" className="font-bold">
                     Username
                   </Label>
 
@@ -250,23 +226,17 @@ export default function LoginPage() {
                     onChange={(e) => setUsername(e.target.value)}
                     required
                     autoComplete="username"
-                    className="h-12 border-gray-300 focus-visible:ring-[#FACC15]"
+                    className={INPUT}
                   />
-
                 </div>
 
                 {/* PASSWORD */}
                 <div className="space-y-2">
-
-                  <Label
-                    htmlFor="password"
-                    className="text-[#171717] font-semibold"
-                  >
+                  <Label htmlFor="password" className="font-bold">
                     Password
                   </Label>
 
                   <div className="relative">
-
                     <Input
                       id="password"
                       type={showPassword ? "text" : "password"}
@@ -275,13 +245,13 @@ export default function LoginPage() {
                       onChange={(e) => setPassword(e.target.value)}
                       required
                       autoComplete="current-password"
-                      className="h-12 pr-12 border-gray-300 focus-visible:ring-[#FACC15]"
+                      className={`${INPUT} pr-12`}
                     />
 
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-[#A16207]"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 rounded text-[#14102B]/60 hover:text-[#14102B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF8FB1]"
                       aria-label={
                         showPassword ? "Hide password" : "Show password"
                       }
@@ -292,9 +262,7 @@ export default function LoginPage() {
                         <Eye className="h-5 w-5" />
                       )}
                     </button>
-
                   </div>
-
                 </div>
 
               </CardContent>
@@ -305,19 +273,18 @@ export default function LoginPage() {
                 <Button
                   type="submit"
                   disabled={loading}
-                  className="w-full h-12 bg-[#FACC15] hover:bg-[#EAB308] text-[#171717] font-black rounded-lg transition-all duration-300"
+                  className="h-12 w-full rounded-lg border-[3px] border-[#14102B] bg-[#FFD23F] text-base font-extrabold text-[#14102B] shadow-[4px_4px_0_#14102B] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-[#FFE066] hover:shadow-[6px_6px_0_#14102B] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[2px_2px_0_#14102B] disabled:opacity-70"
                 >
-                  {loading ? "SIGNING IN..." : "SIGN IN"}
+                  {loading ? "Signing in..." : "Sign in"}
                 </Button>
 
-                <p className="text-sm text-center text-gray-500">
-                  Dont have an account?{" "}
-
+                <p className="text-center text-sm text-[#14102B]/70">
+                  Don&apos;t have an account?{" "}
                   <Link
                     href={CONFIG.ROUTES.REGISTER}
-                    className="font-bold text-[#A16207] hover:text-[#171717] underline underline-offset-4"
+                    className="font-extrabold text-[#14102B] underline decoration-[#FF8FB1] decoration-2 underline-offset-4 hover:bg-[#FF8FB1]/30"
                   >
-                    Create Account
+                    Create account
                   </Link>
                 </p>
 
@@ -327,9 +294,9 @@ export default function LoginPage() {
           </Card>
 
           {/* FOOTER */}
-          <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
+          <div className="flex items-center justify-center gap-2 text-xs text-[#14102B]/60">
             <ChefHat className="h-4 w-4" />
-            Secure login powered by MAYONGBITAW HUB.
+            Secure login by MAYONGBITAW HUB.
           </div>
 
         </div>

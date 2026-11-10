@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -23,7 +22,41 @@ import {
   LogOut,
   ChefHat,
   LayoutDashboard,
+  Sparkles,
 } from "lucide-react";
+
+/* Shared manga-panel look: thick ink outline + hard offset shadow */
+const PANEL =
+  "border-[3px] border-[#14102B] shadow-[6px_6px_0_#14102B] rounded-xl " +
+  "transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 " +
+  "hover:shadow-[8px_8px_0_#14102B]";
+
+const ACTIONS = [
+  {
+    title: "Burger Menu",
+    text: "Pick your burgers, fries, and drinks.",
+    button: "Open menu",
+    href: "/menu",
+    icon: Utensils,
+    tile: "bg-[#FFD23F]",
+  },
+  {
+    title: "My Cart",
+    text: "Check what you picked before you pay.",
+    button: "Open cart",
+    href: "/cart",
+    icon: ShoppingBag,
+    tile: "bg-[#FF8FB1]",
+  },
+  {
+    title: "My Orders",
+    text: "Follow your order and see past ones.",
+    button: "Open orders",
+    href: "/orders",
+    icon: ClipboardList,
+    tile: "bg-[#5EEAD4]",
+  },
+];
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -36,42 +69,44 @@ export default function DashboardPage() {
 
   if (isChecking) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#FFFDF5]">
-        <p className="text-sm text-gray-500">
-          Verifying your session...
-        </p>
+      <div className="halftone flex min-h-screen items-center justify-center">
+        <div className={`${PANEL} flex items-center gap-3 bg-white px-6 py-4`}>
+          <Sparkles className="h-5 w-5 animate-pulse text-[#FF8FB1]" />
+          <p className="text-sm font-bold text-[#14102B]">
+            Checking your session...
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#FFFDF5]">
+    <div className="halftone min-h-screen font-body text-[#14102B]">
 
       {/* NAVBAR */}
-      <header className="bg-[#171717] text-white border-b border-yellow-400/30">
-        <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+      <header className="border-b-4 border-[#FF8FB1] bg-[#14102B] text-white">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
 
           <div className="flex items-center gap-3">
-            <div className="bg-yellow-400 p-2 rounded-lg">
-              <Utensils className="h-7 w-7 text-black" />
+            <div className="-rotate-6 rounded-lg border-[3px] border-white bg-[#FFD23F] p-2">
+              <Utensils className="h-6 w-6 text-[#14102B]" />
             </div>
 
             <div>
-              <h1 className="text-xl font-bold tracking-wide">
+              <h1 className="font-display text-xl leading-none tracking-wide">
                 MAYONGBITAW HUB
               </h1>
-
-              <p className="text-xs tracking-[2px] text-yellow-400">
-                FRESH • TASTY • DELICIOUS
+              <p className="mt-1 text-xs text-[#FFD23F]">
+                Fresh, tasty, delicious
               </p>
             </div>
           </div>
 
           <Button
             onClick={handleLogout}
-            className="bg-yellow-400 text-black hover:bg-yellow-500 font-bold"
+            className="rounded-lg border-[3px] border-white bg-[#FFD23F] font-extrabold text-[#14102B] shadow-[3px_3px_0_#FF8FB1] hover:bg-[#FFE066]"
           >
-            <LogOut className="h-4 w-4 mr-2" />
+            <LogOut className="mr-2 h-4 w-4" />
             Logout
           </Button>
 
@@ -79,133 +114,87 @@ export default function DashboardPage() {
       </header>
 
       {/* DASHBOARD CONTENT */}
-      <main className="max-w-7xl mx-auto px-6 py-10">
+      <main className="mx-auto max-w-7xl px-6 py-10">
 
-        <div className="mb-10">
-          <p className="text-sm tracking-[3px] text-yellow-700 uppercase font-semibold">
-            Customer Dashboard
+        {/* HERO PANEL */}
+        <section
+          className={`${PANEL} speed-lines relative mb-10 overflow-hidden bg-[#14102B] p-8 text-white md:p-12`}
+        >
+          <span className="absolute right-6 top-6 hidden rotate-6 rounded-md border-[3px] border-[#14102B] bg-[#FFD23F] px-3 py-1 font-display text-sm text-[#14102B] md:block">
+            Juicy!
+          </span>
+
+          <p className="text-sm font-bold text-[#FF8FB1]">
+            Welcome back to the hub
           </p>
 
-          <h2 className="text-4xl font-bold text-[#171717] mt-2">
-            Welcome to MAYONGBITAW HUB!
+          <h2 className="font-display mt-2 text-4xl leading-tight md:text-6xl">
+            Itadakimasu!
           </h2>
 
-          <p className="text-gray-600 mt-3">
-            Hungry? Grab a burger! Explore our menu and enjoy delicious meals.
+          <p className="mt-4 max-w-md text-base text-white/80">
+            Fresh burgers, hot fries, and cold drinks are ready when you are.
           </p>
-        </div>
 
-        {/* DASHBOARD CARDS */}
+          <Button
+            onClick={() => router.push("/menu")}
+            className="mt-6 h-11 rounded-lg border-[3px] border-white bg-[#FFD23F] px-6 font-extrabold text-[#14102B] shadow-[4px_4px_0_#FF8FB1] hover:bg-[#FFE066]"
+          >
+            <LayoutDashboard className="mr-2 h-4 w-4" />
+            Order a burger
+          </Button>
+        </section>
+
+        {/* ACTION CARDS */}
         <div className="grid gap-6 md:grid-cols-3">
+          {ACTIONS.map(({ title, text, button, href, icon: Icon, tile }) => (
+            <Card key={title} className={`${PANEL} bg-white`}>
+              <CardHeader>
+                <div
+                  className={`${tile} mb-2 flex h-14 w-14 -rotate-3 items-center justify-center rounded-lg border-[3px] border-[#14102B]`}
+                >
+                  <Icon className="h-7 w-7 text-[#14102B]" />
+                </div>
 
-          {/* MENU CARD */}
-          <Card className="bg-white border-yellow-400/40 shadow-sm hover:shadow-lg transition">
-            <CardHeader>
-              <Utensils className="h-9 w-9 text-yellow-500 mb-2" />
+                <CardTitle className="font-display text-xl text-[#14102B]">
+                  {title}
+                </CardTitle>
+              </CardHeader>
 
-              <CardTitle className="text-[#171717]">
-                Burger Menu
-              </CardTitle>
-            </CardHeader>
+              <CardContent>
+                <p className="mb-4 text-sm text-[#14102B]/70">{text}</p>
 
-            <CardContent>
-              <p className="text-sm text-gray-600 mb-4">
-                Discover our delicious burgers, fries, and drinks.
-              </p>
-
-              <Button
-                className="w-full bg-[#171717] text-white hover:bg-yellow-400 hover:text-black"
-                onClick={() => router.push("/menu")}
-              >
-                View Menu
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* CART CARD */}
-          <Card className="bg-white border-yellow-400/40 shadow-sm hover:shadow-lg transition">
-            <CardHeader>
-              <ShoppingBag className="h-9 w-9 text-yellow-500 mb-2" />
-
-              <CardTitle className="text-[#171717]">
-                My Cart
-              </CardTitle>
-            </CardHeader>
-
-            <CardContent>
-              <p className="text-sm text-gray-600 mb-4">
-                Review your favorite burgers before checkout.
-              </p>
-
-              <Button
-                className="w-full bg-[#171717] text-white hover:bg-yellow-400 hover:text-black"
-                onClick={() => router.push("/cart")}
-              >
-                View Cart
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* ORDERS CARD */}
-          <Card className="bg-white border-yellow-400/40 shadow-sm hover:shadow-lg transition">
-            <CardHeader>
-              <ClipboardList className="h-9 w-9 text-yellow-500 mb-2" />
-
-              <CardTitle className="text-[#171717]">
-                My Orders
-              </CardTitle>
-            </CardHeader>
-
-            <CardContent>
-              <p className="text-sm text-gray-600 mb-4">
-                Track your orders and check your order history.
-              </p>
-
-              <Button
-                className="w-full bg-[#171717] text-white hover:bg-yellow-400 hover:text-black"
-                onClick={() => router.push("/orders")}
-              >
-                View Orders
-              </Button>
-            </CardContent>
-          </Card>
-
+                <Button
+                  className="w-full rounded-lg border-[3px] border-[#14102B] bg-[#14102B] font-bold text-white hover:bg-[#FFD23F] hover:text-[#14102B]"
+                  onClick={() => router.push(href)}
+                >
+                  {button}
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
         </div>
 
-        {/* WELCOME SECTION */}
-        <Card className="mt-8 bg-[#171717] border-yellow-400/40 text-white overflow-hidden">
-          <CardContent className="p-8 flex flex-col md:flex-row items-center justify-between gap-6">
-
-            <div>
-              <ChefHat className="h-10 w-10 text-yellow-400 mb-4" />
-
-              <h3 className="text-2xl font-bold">
-                Fresh, Tasty, Delicious!
-              </h3>
-
-              <p className="text-gray-300 mt-2">
-                Enjoy freshly prepared burgers and delicious meals
-                delivered straight to your door.
-              </p>
+        {/* CHEF NOTE */}
+        <Card className={`${PANEL} mt-8 bg-[#FFF6E5]`}>
+          <CardContent className="flex items-center gap-5 p-6">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-[3px] border-[#14102B] bg-[#FF8FB1]">
+              <ChefHat className="h-7 w-7 text-[#14102B]" />
             </div>
 
-            <Button
-              onClick={() => router.push("/menu")}
-              className="bg-yellow-400 text-black hover:bg-yellow-500 font-bold"
-            >
-              <LayoutDashboard className="h-4 w-4 mr-2" />
-              Explore Menu
-            </Button>
-
+            <p className="text-sm font-medium md:text-base">
+              <span className="font-extrabold">Chef&apos;s note:</span> every
+              burger is cooked fresh after you order, so it reaches you hot.
+            </p>
           </CardContent>
         </Card>
 
       </main>
 
       {/* FOOTER */}
-      <footer className="text-center py-6 border-t border-yellow-400/30">
-        <p className="text-sm text-gray-500">
-          © 2026 MAYONGBITAW HUB. All Rights Reserved.
+      <footer className="border-t-[3px] border-[#14102B] bg-[#FFF6E5] py-6 text-center">
+        <p className="text-sm font-medium text-[#14102B]/70">
+          © 2026 MAYONGBITAW HUB. All rights reserved.
         </p>
       </footer>
 

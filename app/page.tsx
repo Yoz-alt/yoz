@@ -110,7 +110,6 @@ export default function Home() {
           </Link>
 
           <Button
-            asChild
             className="h-10 rounded-lg border-[3px] border-[#14102B] bg-white px-4 font-extrabold text-[#14102B] hover:bg-[#FFF3C4]"
           >
             <Link href={CONFIG.ROUTES.LOGIN}>Sign in</Link>
@@ -136,14 +135,13 @@ export default function Home() {
 
               <div className="flex flex-wrap gap-4 pt-2">
                 <Button
-                  asChild
                   className={`${BTN_BASE} bg-[#FFD23F] hover:bg-[#FFE066]`}
                 >
                   <Link href={CONFIG.ROUTES.REGISTER}>Create account</Link>
                 </Button>
 
                 <Button
-                  asChild
+                
                   className={`${BTN_BASE} bg-white hover:bg-[#FFF3C4]`}
                 >
                   <Link href={CONFIG.ROUTES.LOGIN}>Sign in</Link>
@@ -227,7 +225,7 @@ export default function Home() {
             <p className="text-[#14102B]/70">{SITE.ctaText}</p>
 
             <Button
-              asChild
+            
               className={`${BTN_BASE} bg-[#FFD23F] hover:bg-[#FFE066]`}
             >
               <Link href={CONFIG.ROUTES.REGISTER}>Create account</Link>
